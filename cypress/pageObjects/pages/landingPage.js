@@ -7,12 +7,15 @@ const PASSWORD_FIELD = "#password";
 //Class selector - Not the best way, but life is harsh , so might need to use it
 const LOGIN_BUTTON = ".submit-button";
 const LOGIN_COOKIE_NAME = "session-username";
+const LOGIN_ERROR = "[data-test=error]"
 
 export class LandingPage extends BasePage {
-  static login(username) {
-    cy.visit("https://www.saucedemo.com/");
-    this.type(USERNAME_FIELD, username);
-    this.type(PASSWORD_FIELD, "secret_sauce");
+  static login(user) {
+    cy.visit("/");
+    cy.fixture("testUsers.json").then((fixture) => {
+      this.type(USERNAME_FIELD, fixture[user].username);
+      this.type(PASSWORD_FIELD, fixture[user].password);
+    })
     this.click(LOGIN_BUTTON);
   }
 
@@ -23,5 +26,9 @@ export class LandingPage extends BasePage {
 
   static verifyEmptyLoginCookies() {
     this.cookieNotExist(LOGIN_COOKIE_NAME);
+  }
+
+  static verifyLockedUserError() {
+    this.hasText(LOGIN_ERROR,"Epic sadface: Sorry, this user has been locked out.")
   }
 }

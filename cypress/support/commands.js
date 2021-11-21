@@ -33,7 +33,7 @@ Cypress.Commands.add("setAddedItems" , (idArray) => {
 })
 
 Cypress.Commands.add("normalLogin" , (user) => {
-    cy.visit("https://www.saucedemo.com/");
+    cy.visit("/");
     //Custom attribute made for testing - Best CSS selector
     cy.get("[data-test=username]").type(user);
     //ID - 2nd to best, since they have to be unique
